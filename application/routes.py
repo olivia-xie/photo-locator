@@ -18,3 +18,4 @@ def upload():
             if key.startswith('file'):
                 f.save(os.path.join(app.config['UPLOAD_PATH'], f.filename))
     return render_template('index.html')
+
