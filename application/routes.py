@@ -59,11 +59,20 @@ def results():
     landmark = detect_landmarks(path)
 
     if landmark is None:
-        city = country = None
+        city = country = map_url = None
     else:
         loc = reverse_geocode(landmark.locations[0].lat_lng.latitude,
-                    landmark.locations[0].lat_lng.longitude)
+                              landmark.locations[0].lat_lng.longitude)
         city = loc[0]
         country = loc[1]
 
-    return render_template('results.html', landmark=landmark, city=city, country=country)
+        map_url = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyDsliI1R8sDXGMUWVcgBl22_ZflbdBZO-Q&q=' + \
+            landmark.description + ','
+        if(city is not None):
+            map_url += city
+        if(country is not None):
+            map_url += country
+
+        print(map_url)
+
+    return render_template('results.html', landmark=landmark, city=city, country=country, mapurl=map_url)
