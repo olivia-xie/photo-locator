@@ -2,6 +2,23 @@
 
 {% block content %}
 
-<img src="../static/uploads/{{ file_name }}" alt="Fail"/>
+{% if landmark %}
+
+<d1>
+    <dt>{{ landmark.description }}</dt>
+</d1>
+
+<div>
+    <iframe width="600" height="450" frameborder="0" style="border:0"
+        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDsliI1R8sDXGMUWVcgBl22_ZflbdBZO-Q&q={{ landmark.description }},{{ city }}+{{ country }}"
+        allowfullscreen>
+    </iframe>
+</div>
+
+{% else %}
+
+<h3>No landmarks detected.</h3>
+
+{% endif %}
 
 {% endblock %}
