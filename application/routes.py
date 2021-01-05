@@ -2,7 +2,6 @@ import os
 from application import app
 from flask import render_template, request, redirect, url_for
 from flask_dropzone import Dropzone
-from PIL import Image
 from application.image_processing.detect_landmark import detect_landmarks
 from urllib.request import urlopen
 import json
@@ -24,17 +23,18 @@ def reverse_geocode(lat, lon):
     key = "AIzaSyDsliI1R8sDXGMUWVcgBl22_ZflbdBZO-Q"
     url = "https://maps.googleapis.com/maps/api/geocode/json?"
     url += "latlng=%s,%s&sensor=false&key=%s" % (lat, lon, key)
+    print(url)
     v = urlopen(url).read()
     j = json.loads(v)
     components = j['results'][0]['address_components']
-    country = town = None
+    country = postal_code = None
     for c in components:
         if "country" in c['types']:
             country = c['long_name']
-        if "postal_town" in c['types']:
-            town = c['long_name']
+        if "postal_code" in c['types']:
+            postal_code = c['long_name']
 
-    return town, country
+    return postal_code, country
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -59,20 +59,22 @@ def results():
     landmark = detect_landmarks(path)
 
     if landmark is None:
-        city = country = map_url = None
+        postal_code = country = map_url = None
     else:
         loc = reverse_geocode(landmark.locations[0].lat_lng.latitude,
                               landmark.locations[0].lat_lng.longitude)
-        city = loc[0]
+        postal_code = loc[0]
         country = loc[1]
 
         map_url = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyDsliI1R8sDXGMUWVcgBl22_ZflbdBZO-Q&q=' + \
             landmark.description + ','
-        if(city is not None):
-            map_url += city
+        if(postal_code is not None):
+            map_url += postal_code
         if(country is not None):
             map_url += country
 
+        print(postal_code)
+        print(country)
         print(map_url)
 
-    return render_template('results.html', landmark=landmark, city=city, country=country, mapurl=map_url)
+    return render_template('results.html', landmark=landmark, postalcode=postal_code, country=country, mapurl=map_url)
