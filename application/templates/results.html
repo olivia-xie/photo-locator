@@ -4,28 +4,52 @@
 
 {% if landmark %}
 
-<d1>
-    <dt>{{ landmark.description }}</dt>
-</d1>
+<section id="main" class="wrapper">
+    <div class="inner">
 
-<div>
-    <iframe width="600" height="450" frameborder="0" style="border:0"
-        src="{{ mapurl }}" allowfullscreen>
-    </iframe>
-</div>
+        <header class="align-center">
+            <h1>{{ landmark.description }}</h1>
+        </header>
 
-<div>
-    {{ extract }}
-</div>
+        <span class="image fit"><a href={{ picurl }}><img src={{ picurl }} /></a></span>
 
-<div>
-    Description retrieved from Wikipedia.com
-</div>
+        <iframe class="float-left" width="50%" height="450" frameborder="0" style="padding-right:15px; padding-bottom:15px;" src="{{ mapurl }}" allowfullscreen>
+        </iframe>
 
+        <div>
+
+            {% if extract %}
+
+            <p>{{ extract }}</p>
+
+            </br>
+
+            <p>Description retrieved from Wikipedia.com</p>
+
+        </br>
+
+            {% else %}
+
+            <p>No description was found for this landmark.</p>
+
+        </br>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    </br>
+
+    </div>
+</section>
 
 {% else %}
 
+</br>
 <h3>Sorry, no landmarks were detected.</h3>
+<a href="/">Try a different photo.</a>
 
 {% endif %}
 

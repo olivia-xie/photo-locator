@@ -2,12 +2,27 @@
 
 {% block content %}
 
-<body>
-    {{ dropzone.create('/') }}
-    <button id="upload">Submit</button>
+<section class="wrapper">
+    <div class="inner">
 
-    {{ dropzone.load_js() }}
-    {{ dropzone.config(custom_options='addRemoveLinks: true') }}
-</body>
+        <header class="align-center">
+            <h1>Upload a photo of a landmark to find out more about it!</h1>
+        </header>
+
+        <div>
+            {{ dropzone.create('/') }}
+
+            </br>
+
+            <header class="align-center">
+                <button id="upload">Submit</button>
+            </header>
+
+            {{ dropzone.load_js() }}
+            {{ dropzone.config(custom_options='addRemoveLinks: true') }}
+        </div>
+    </div>
+
+</section>
 
 {% endblock %}
