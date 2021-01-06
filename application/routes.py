@@ -3,6 +3,7 @@ from application import app
 from flask import render_template, request, redirect, url_for
 from flask_dropzone import Dropzone
 from application.image_processing.detect_landmark import detect_landmarks
+from application.image_processing.wiki_blurb import get_wiki_intro
 from urllib.request import urlopen
 import json
 import shutil
@@ -59,7 +60,7 @@ def results():
     landmark = detect_landmarks(path)
 
     if landmark is None:
-        postal_code = country = map_url = None
+        postal_code = country = map_url = extract = None
     else:
         loc = reverse_geocode(landmark.locations[0].lat_lng.latitude,
                               landmark.locations[0].lat_lng.longitude)
@@ -73,8 +74,11 @@ def results():
         if(country is not None):
             map_url += country
 
+        extract = get_wiki_intro(landmark.description)
+
         print(postal_code)
         print(country)
         print(map_url)
 
-    return render_template('results.html', landmark=landmark, postalcode=postal_code, country=country, mapurl=map_url)
+    return render_template('results.html', landmark=landmark, mapurl=map_url, extract=extract)
+
