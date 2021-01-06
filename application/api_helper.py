@@ -49,7 +49,7 @@ def get_wiki_intro(search):
 
 
 def reverse_geocode(lat, lon):
-    key = "AIzaSyDsliI1R8sDXGMUWVcgBl22_ZflbdBZO-Q"
+    key = ""
     url = "https://maps.googleapis.com/maps/api/geocode/json?"
     url += "latlng=%s,%s&sensor=false&key=%s" % (lat, lon, key)
     v = urlopen(url).read()
@@ -66,7 +66,7 @@ def reverse_geocode(lat, lon):
 
 
 def get_landmark_image(search):
-    key = "5LSxHhQ7Am_jUmrirkdHFwECMKQlMjsr7cL55MVckZE"
+    key = ""
     url = "https://api.unsplash.com/search/photos/?query=" + quote(search) + "&per_page=1&client_id=" + key
 
     v = urlopen(url).read()
