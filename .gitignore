@@ -2,5 +2,4 @@ __pycache__/
 application/__pycache__/
 application/image_processing/__pycache__/
 venv/
-uploads/
 .vscode/

@@ -1,6 +1,8 @@
 import os
 import json
 import shutil
+import glob
+import time
 from application import app
 from flask import render_template, request, redirect, url_for
 from flask_dropzone import Dropzone
@@ -17,12 +19,21 @@ app.config['DROPZONE_REDIRECT_VIEW'] = 'results'
 
 dropzone = Dropzone(app)
 
-filename = "default.jpeg"
+filename = "default.jpg"
+
+
+def cleanup():
+    path = app.config['UPLOAD_PATH']
+    filelist = [ f for f in os.listdir(path)]
+    for f in filelist:
+        if f != 'default.jpg':
+            os.remove(os.path.join(path, f))
 
 
 @app.route('/', methods=['POST', 'GET'])
 def upload():
     global filename
+    cleanup()
 
     if request.method == 'POST':
         for key, f in request.files.items():
@@ -58,6 +69,4 @@ def results():
         extract = get_wiki_intro(landmark.description)
         pic = get_landmark_image(landmark.description)
 
-
     return render_template('results.html', landmark=landmark, mapurl=map_url, extract=extract, picurl=pic)
-
