@@ -69,13 +69,9 @@ def get_landmark_image(search):
     key = "5LSxHhQ7Am_jUmrirkdHFwECMKQlMjsr7cL55MVckZE"
     url = "https://api.unsplash.com/search/photos/?query=" + quote(search) + "&per_page=1&client_id=" + key
 
-    print(url)
-
     v = urlopen(url).read()
     j = json.loads(v)
     photo_link = j["results"][0]["urls"]["regular"]
-
-    print(photo_link)
 
     return photo_link
 

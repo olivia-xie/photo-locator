@@ -27,7 +27,6 @@ def upload():
     if request.method == 'POST':
         for key, f in request.files.items():
             filename = f.filename
-            print(filename)
             if key.startswith('file'):
                 f.save(os.path.join(app.config['UPLOAD_PATH'], f.filename))
 
