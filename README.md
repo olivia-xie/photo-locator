@@ -9,3 +9,12 @@ Built using:
 * Google Cloud Vision, Maps, and Places APIs
 * WikiMedia API
 * Unsplash Image API 
+* AWS S3
+
+## Screencaps
+
+![1](/screencaps/rsz_home.png)
+
+![2](/screencaps/rsz_result1.png)
+
+![3](/screencaps/rsz_result2.png)
