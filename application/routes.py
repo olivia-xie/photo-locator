@@ -22,18 +22,9 @@ dropzone = Dropzone(app)
 filename = "default.jpg"
 
 
-def cleanup():
-    path = app.config['UPLOAD_PATH']
-    filelist = [ f for f in os.listdir(path)]
-    for f in filelist:
-        if f != 'default.jpg':
-            os.remove(os.path.join(path, f))
-
-
 @app.route('/', methods=['POST', 'GET'])
 def upload():
     global filename
-    cleanup()
 
     if request.method == 'POST':
         for key, f in request.files.items():
