@@ -10,11 +10,8 @@ from urllib.parse import quote
 def detect_landmarks(path):
 
     client = vision.ImageAnnotatorClient()
-
-    with io.open(path, 'rb') as image_file:
-        content = image_file.read()
-
-    image = vision.Image(content=content)
+    image = vision.Image()
+    image.source.image_uri = path
 
     response = client.landmark_detection(image=image)
     landmarks = response.landmark_annotations

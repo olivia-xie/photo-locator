@@ -3,12 +3,28 @@ import json
 import shutil
 import glob
 import time
+import boto3
+import botocore
 from application import app
 from flask import render_template, request, redirect, url_for
 from flask_dropzone import Dropzone
 from application.api_helper import detect_landmarks, get_wiki_intro, reverse_geocode, get_landmark_image
 from urllib.request import urlopen
+from werkzeug.utils import secure_filename
 
+
+# AWS Bucket Config
+S3_BUCKET = os.environ.get("S3_BUCKET_NAME")
+S3_KEY = os.environ.get("AWS_ACCESS_KEY_ID")
+S3_SECRET = os.environ.get("AWS_SECRET_ACCESS_KEY")
+S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
+
+
+s3 = boto3.client(
+    "s3",
+    aws_access_key_id=S3_KEY,
+    aws_secret_access_key=S3_SECRET
+)
 
 # Dropzone settings
 app.config['DROPZONE_ALLOWED_FILE_CUSTOM'] = True
@@ -19,7 +35,22 @@ app.config['DROPZONE_REDIRECT_VIEW'] = 'results'
 
 dropzone = Dropzone(app)
 
-filename = "default.jpg"
+filename = None
+
+
+def upload_file_to_s3(file, bucket_name, acl="public-read"):
+
+    s3.upload_fileobj(
+        file,
+        bucket_name,
+        file.filename,
+        ExtraArgs={
+            "ACL": acl,
+            "ContentType": file.content_type
+        }
+    )
+
+    return "{}{}".format(S3_LOCATION, file.filename)
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -28,9 +59,10 @@ def upload():
 
     if request.method == 'POST':
         for key, f in request.files.items():
-            filename = f.filename
             if key.startswith('file'):
-                f.save(os.path.join(app.config['UPLOAD_PATH'], f.filename))
+                f.filename = secure_filename(f.filename)
+                output = upload_file_to_s3(f, S3_BUCKET)
+                filename = str(output)
 
     return render_template('index.html')
 
@@ -38,9 +70,8 @@ def upload():
 @app.route('/results', methods=['POST', 'GET'])
 def results():
     global filename
-    path = os.path.join(app.config['UPLOAD_PATH'], filename)
-
-    landmark = detect_landmarks(path)
+    
+    landmark = detect_landmarks(filename)
 
     if landmark is None:
         postal_code = country = map_url = extract = pic = None
