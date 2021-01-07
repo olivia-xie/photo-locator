@@ -13,10 +13,12 @@
 
         <span class="image fit"><a href={{ picurl }}><img src={{ picurl }} /></a></span>
 
-        <iframe class="float-left" width="50%" height="450" frameborder="0" style="padding-right:15px; padding-bottom:15px;" src="{{ mapurl }}" allowfullscreen>
-        </iframe>
+        <div style="text-align:center">
 
-        <div>
+            <iframe width="70%" height="450" frameborder="0" src="{{ mapurl }}" allowfullscreen>
+            </iframe>
+
+            </br>
 
             {% if extract %}
 
@@ -26,13 +28,13 @@
 
             <p>Description retrieved from Wikipedia.com</p>
 
-        </br>
+            </br>
 
             {% else %}
 
             <p>No description was found for this landmark.</p>
 
-        </br>
+            </br>
 
             {% endif %}
 
