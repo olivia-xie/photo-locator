@@ -4,4 +4,8 @@ Photo Locator is an application which takes a photo of a landmark, identifies it
 
 Try it out here: https://floating-bastion-35115.herokuapp.com/
 
-Built using Flask, Google Cloud Vision, Maps, and Places APIs, WikiMedia API, and Unsplash Image API 
+Built using:
+* Flask
+* Google Cloud Vision, Maps, and Places APIs
+* WikiMedia API
+* Unsplash Image API 
